@@ -20,8 +20,10 @@ import java.lang.RuntimeException
 
 class ShopItemFragment: Fragment() {
 
-    private lateinit var viewModel: ShopItemViewModel
 
+
+    private lateinit var viewModel: ShopItemViewModel
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
     private lateinit var tilName: TextInputLayout
     private lateinit var tilCount: TextInputLayout
     private lateinit var etName: EditText
@@ -43,6 +45,15 @@ class ShopItemFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is OnEditingFinishedListener){
+            onEditingFinishedListener = context
+        } else {
+            throw RuntimeException("Activity must implement OnEditingFinishedListener")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +93,7 @@ class ShopItemFragment: Fragment() {
         }
 
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onEditingFinishedListener.onEditingFinished()
         }
 
 //
@@ -158,6 +169,10 @@ class ShopItemFragment: Fragment() {
         etCount = view.findViewById(R.id.et_count)
         buttonSave = view.findViewById(R.id.save_button)
     }
+    interface OnEditingFinishedListener {
+
+        fun onEditingFinished()
+    }
 
     //
     companion object {
@@ -183,6 +198,7 @@ class ShopItemFragment: Fragment() {
                 }
             }
         }
+
 
     }
 }
