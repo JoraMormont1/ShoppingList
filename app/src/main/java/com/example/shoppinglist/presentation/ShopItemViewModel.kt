@@ -94,30 +94,27 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     private fun validateInput(name: String, count: Int): Boolean {
         var result = true
         if (name.isBlank()) {
-            _errorInputName.value = true
+            _errorInputName.postValue(true)
             result = false
         }
         if (count <= 0) {
-            _errorInputCount.value = true
+            _errorInputCount.postValue(true)
             result = false
         }
         return result
     }
 
     fun resetErrorInputName() {
-        _errorInputName.value = false
+        _errorInputName.postValue(false)
     }
 
     fun resetErrorInputCount() {
-        _errorInputCount.value = false
+        _errorInputCount.postValue(false)
     }
 
     private fun finishWork() {
-        _shouldCloseScreen.value = Unit
+        _shouldCloseScreen.postValue(Unit)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
-    }
+
 }
