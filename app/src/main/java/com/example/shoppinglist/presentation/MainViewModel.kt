@@ -14,14 +14,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel @Inject constructor(
+    private val getShopListUseCase: GetShopListUseCase,
+            private val deleteShopListUseCase: DeleteShopItemUseCase,
+            private val editShopListUseCase: EditShopItemUseCase
+): ViewModel() {
 
-    private val repository = ShopListRepositoryImpl(application)
 
-    private val getShopListUseCase = GetShopListUseCase(repository)
-    private val deleteShopListUseCase = DeleteShopItemUseCase(repository)
-    private val editShopListUseCase = EditShopItemUseCase(repository)
 
     val shopList = getShopListUseCase.getShopList()
 
