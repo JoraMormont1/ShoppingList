@@ -109,5 +109,4 @@ class ShopItemViewModel @Inject constructor(
         _shouldCloseScreen.postValue(Unit)
     }
 
-
 }
